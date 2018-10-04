@@ -7,6 +7,6 @@ provider "mysql" {
 
 # Create a Database
 resource "mysql_database" "app" {
-  count = "${length(var.databases_names)"
+  count = "${length(var.databases_names)}"
   name = "${var.databases_names[count.index]}"
 }
