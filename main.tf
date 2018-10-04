@@ -11,13 +11,14 @@ resource "mysql_database" "databases" {
   name = "${var.databases_names[count.index]}"
 }
 
+# Create users
 resource "mysql_user" "users" {
   count = "${length(keys(var.usernames_passwords))}"
   plaintext_password =  "${var.usernames_passwords[element(keys(var.usernames_passwords), count.index)]}"
   host               = "%"
   user = "${element(keys(var.usernames_passwords), count.index)}"
 }
-
+# Grant select for each user on any database
 resource "mysql_grant" "grant_select" {
   count = "${length(keys(var.usernames_passwords)) * length(var.databases_names)}"
   user       = "${element(keys(var.usernames_passwords), count.index % length(keys(var.usernames_passwords)))}"
